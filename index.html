@@ -7,6 +7,86 @@
     <title>Document</title>
 </head>
 <body>
-    
+<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+<script type="text/javascript" src="indexdb.js"></script>
+<div id="app">
+</div>
+<script>
+    Vue.component('ComponentPropi', {
+        props: {
+            data: {
+                type: Object
+            }
+        },
+        template: `
+          <div>
+          <h1>{{ data.text }}</h1>
+          <h2>{{ data.text }}</h2>
+          </div>
+        `
+    });
+
+    let app = new Vue({
+        el: '#app',
+        data: {
+            inputs: {
+                radiosDynamicOptions: [
+                    {
+                        label: 'sudoku1',
+                        value: 'sudoku1.html'
+                    },
+                    {
+                        label: 'sudoku2',
+                        value: 'sudoku2.html'
+                    },
+                    {
+                        label: 'sudoku3',
+                        value: 'sudoku3.html'
+                    }
+                ]
+            },
+            ejemplo:{
+                text:"gola",
+            }
+        },
+        methods: {
+            initDb: function () {
+                accesDB.then(
+                    async function (value) {
+                        let variable = await obtenerTitulo()
+                        console.log("estado " + app._data.inputs.radiosDynamicOptions.length);
+                        const longitud = app._data.inputs.radiosDynamicOptions.length;
+                        for (let i = 0; i < longitud; i++) {
+                            app._data.inputs.radiosDynamicOptions[i].label = variable[i];
+                        }
+
+                    }
+                    ,
+                    function (error) {
+                        console.log("Algo salio mal")
+                    }
+                );
+            }
+        },
+        beforeMount() {
+            console.log('2dsds');
+            this.initDb();
+        },
+        template: `
+          <div>
+          <h4>Radios dinàmics</h4>
+          <template v-for="(option, index) in inputs.radiosDynamicOptions">
+            <input v-model="inputs.radiosDynamic" type="radio" v-bind:value="option.value" v-bind:id="option.value"/>
+            <label v-bind:for="option.value">{{ option.label }}</label>
+            <br v-if="index < inputs.radiosDynamicOptions.length">
+          </template>
+          <p>
+            <strong>Radios:</strong> {{ inputs.radiosDynamic }}
+          </p>
+          <ComponentPropi :data="ejemplo"></ComponentPropi>
+          </div>`
+    });
+
+</script>
 </body>
 </html>
