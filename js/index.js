@@ -1,8 +1,8 @@
 window.addEventListener('load', carga);
 
-function carga(){
-    
-    let n=0;
+function carga() {
+
+    /*let n = 0;
 
     for (let i = 0; i < 9; i++) {
         fila = document.createElement('tr');
@@ -13,13 +13,12 @@ function carga(){
             cella.setAttribute("id", i + '-' + j);
             document.getElementById(i).appendChild(cella);
             numero = document.createElement('input');
-            numero.setAttribute("id", 'numero'+n);
+            numero.setAttribute("id", 'numero' + n);
             numero.setAttribute('maxlength', '1');
             document.getElementById(i + '-' + j).appendChild(numero);
             n++;
         }
-    }
-    
+    }*/
 
     /*class sudoku1{
         constructor(resolt,noresolt){
@@ -42,8 +41,8 @@ function carga(){
         }
     }*/
 
-    class sudoku{
-        constructor(resolt,noresolt){
+    class sudoku {
+        constructor(resolt, noresolt) {
             this.resolt;
             this.noresolt;
         }
@@ -53,37 +52,42 @@ function carga(){
     let app = new Vue({
         el: '#app',
         data: {
-          lazy:'',
-          number:0,
-          trim:'',
-          noTrim:''
+            sudokus: [
+                {
+                    resolt: 1 /*[[1, 6, 5, 3, 9, 7, 4, 7, 8][3, 2, 4, 1, 8, 7, 5, 6, 9][7, 8, 9, 2, 6, 5, 3, 4, 1][9, 4, 6, 8, 1, 3, 7, 5, 2][8, 5, 3, 7, 2, 9, 4, 1, 6][2, 1, 7, 5, 4, 6, 8, 9, 3][6, 7, 1, 4, 3, 2, 9, 8, 5][5, 3, 8, 9, 7, 1, 6, 2, 4][4, 9, 2, 6, 5, 8, 1, 3, 7]]*/,
+                }, {
+                    noresolt: 2 /*[[1, 6, 5, 3, 0, 0, 0, 7, 8][3, 2, 0, 1, 0, 0, 5, 0, 0][0, 0, 0, 2, 6, 0, 0, 4, 0][9, 0, 6, 0, 0, 3, 0, 0, 0][0, 0, 0, 7, 2, 9, 0, 0, 6][0, 0, 7, 0, 4, 0, 8, 0, 0][0, 0, 0, 0, 0, 0, 9, 0, 0][0, 3, 8, 0, 0, 0, 0, 0, 0][0, 0, 0, 6, 0, 0, 1, 0, 7]]*/
+                }
+            ]
         },
         template: `
     <section>
-        <h4>Lazy</h4>
-  <input v-model.lazy="lazy" type="text" />
-  <p>
-      <strong>Lazy:</strong> {{lazy}}
-  </p>
-  <h4>Number</h4>
-  <input v-model.number="number" type="text" />
-  <p>
-      <strong>Number:</strong> {{number}}
-  </p>
-  <p>
-      <strong>Type of Number:</strong> {{typeof number}}
-  </p>
-  <h4>No Trim</h4>
-  <input v-model="noTrim" type="text" />
-  <p>
-      <strong>No Trim:</strong> "{{noTrim}}"
-  </p>
-  <h4>Trim</h4>
-  <input v-model.trim="trim" type="text" />
-  <p>
-      <strong>Trim:</strong> "{{trim}}"
-  </p>
+        <table id="taulell">
+        </table>
+        <button v-on:click="comprobarResultat">Comprobar resultat</button>
   </section>
-        `
-      })
+        `,methods: {
+            crearCelles: function () {
+                let n = 0;
+                for (let i = 0; i < 9; i++) {
+                    fila = document.createElement('tr');
+                    fila.setAttribute("id", i);
+                    document.getElementById('taulell').appendChild(fila);
+                    for (let j = 0; j < 9; j++) {
+                        cella = document.createElement('td');
+                        cella.setAttribute("id", i + '-' + j);
+                        document.getElementById(i).appendChild(cella);
+                        numero = document.createElement('input');
+                        numero.setAttribute("id", 'numero' + n);
+                        numero.setAttribute('maxlength', '1');
+                        document.getElementById(i + '-' + j).appendChild(numero);
+                        n++;
+                    }
+                }
+            },comprobarResultat(){
+                
+            }
+          },
+    })
+    app.crearCelles();
 }
