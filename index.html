@@ -12,7 +12,7 @@
 <div id="app">
 </div>
 <script>
-    Vue.component('ComponentPropi', {
+    Vue.component('menuInicial', {
         props: {
             data: {
                 type: Object
@@ -20,9 +20,16 @@
         },
         template: `
           <div>
-          <h1>{{ data.text }}</h1>
-          <h2>{{ data.text }}</h2>
+              <template v-for="(option, index) in data.radiosDynamicOptions">
+                <input v-model="data.radiosDynamic" type="radio" v-bind:value="option.value" v-bind:id="option.value"/>
+                <label v-bind:for="option.value">{{ option.label }}</label>
+                <br v-if="index < data.radiosDynamicOptions.length">
+              </template>
+              <p>
+                <strong>Radios:</strong> {{ data.radiosDynamic }}
+              </p>
           </div>
+
         `
     });
 
@@ -45,8 +52,8 @@
                     }
                 ]
             },
-            ejemplo:{
-                text:"gola",
+            ejemplo: {
+                text: "gola",
             }
         },
         methods: {
@@ -75,15 +82,7 @@
         template: `
           <div>
           <h4>Radios dinàmics</h4>
-          <template v-for="(option, index) in inputs.radiosDynamicOptions">
-            <input v-model="inputs.radiosDynamic" type="radio" v-bind:value="option.value" v-bind:id="option.value"/>
-            <label v-bind:for="option.value">{{ option.label }}</label>
-            <br v-if="index < inputs.radiosDynamicOptions.length">
-          </template>
-          <p>
-            <strong>Radios:</strong> {{ inputs.radiosDynamic }}
-          </p>
-          <ComponentPropi :data="ejemplo"></ComponentPropi>
+          <menuInicial :data="inputs"></menuInicial>
           </div>`
     });
 
