@@ -30,3 +30,7 @@ input {
     text-align: center;
     outline: none;
 }
+
+.numeroNegreta{
+    font-weight:bold;
+}
