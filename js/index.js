@@ -73,20 +73,30 @@ function carga() {
         el: '#app',
         data: function () {
             return {
+                victoria: false,
+                derrota: false,
+                comptador: 0,
                 sudoku:
                 {
-                    resolt: [[1, 6, 5, 3, 9, 7, 4, 7, 8], [3, 2, 4, 1, 8, 7, 5, 6, 9], [7, 8, 9, 2, 6, 5, 3, 4, 1], [9, 4, 6, 8, 1, 3, 7, 5, 2], [8, 5, 3, 7, 2, 9, 4, 1, 6], [2, 1, 7, 5, 4, 6, 8, 9, 3], [6, 7, 1, 4, 3, 2, 9, 8, 5], [5, 3, 8, 9, 7, 1, 6, 2, 4], [4, 9, 2, 6, 5, 8, 1, 3, 7]],
+                    resolt: [[1, 6, 5, 3, 9, 4, 2, 7, 8], [3, 2, 4, 1, 8, 7, 5, 6, 9], [7, 8, 9, 2, 6, 5, 3, 4, 1], [9, 4, 6, 8, 1, 3, 7, 5, 2], [8, 5, 3, 7, 2, 9, 4, 1, 6], [2, 1, 7, 5, 4, 6, 8, 9, 3], [6, 7, 1, 4, 3, 2, 9, 8, 5], [5, 3, 8, 9, 7, 1, 6, 2, 4], [4, 9, 2, 6, 5, 8, 1, 3, 7]],
                     noresolt: [[1, 6, 5, 3, 0, 0, 0, 7, 8], [3, 2, 0, 1, 0, 0, 5, 0, 0], [0, 0, 0, 2, 6, 0, 0, 4, 0], [9, 0, 6, 0, 0, 3, 0, 0, 0], [0, 0, 0, 7, 2, 9, 0, 0, 6], [0, 0, 7, 0, 4, 0, 8, 0, 0], [0, 0, 0, 0, 0, 0, 9, 0, 0], [0, 3, 8, 0, 0, 0, 0, 0, 0], [0, 0, 0, 6, 0, 0, 1, 0, 7]]
                 }
 
             }
         },
         template: `
-    <section>
-        <table id="taulell">
-        </table>
-        <button v-on:click="comprobarResultat">Comprobar resultat</button>
-  </section>
+            <section>
+            <span id="temporitzador">{{ comptador }}</span>
+                <table id="taulell">
+                </table>
+                <button v-on:click="comprobarResultat">Comprobar resultat</button>
+                <transition name="slide-fade">
+                    <p v-if="victoria">Has guanyat</p>
+                </transition>
+                <transition name="slide-fade">
+                    <p v-if="derrota">Has perdut</p>
+                </transition>
+            </section>
         `, methods: {
             crearCelles: function () {
                 let n = 1;
@@ -101,26 +111,46 @@ function carga() {
                         numero = document.createElement('input');
                         numero.setAttribute("id", 'numero' + n);
                         numero.setAttribute('maxlength', '1');
-                        if(this.sudoku.noresolt[i][j]!=0){
+                        if (this.sudoku.noresolt[i][j] != 0) {
                             numero.setAttribute("value", this.sudoku.noresolt[i][j]);
-                            numero.setAttribute("readonly","");
-                            numero.classList.add("numeroNegreta"); 
+                            numero.setAttribute("readonly", "");
+                            numero.classList.add("numeroNegreta");
                         }
                         document.getElementById(i + '-' + j).appendChild(numero);
-
                         n++;
                     }
                 }
+                setInterval(() => {
+                    this.comptador++
+                }, 1000)
             }, comprobarResultat() {
                 let n = 1;
+                let encerts = 0;
+                let faltenCelles = false;
                 for (let i = 0; i < 9; i++) {
                     for (let j = 0; j < 9; j++) {
+                        if (document.getElementById('numero' + n).value.length == 0) { faltenCelles = true }
+
                         if (document.getElementById('numero' + n).value == this.sudoku.resolt[i][j]) {
                             console.log('correcte');
+                            document.getElementById(i + '-' + j).classList.add('correcte');
+                            document.getElementById('numero' + n).classList.add('correcte');
+                            encerts++;
+
                         } else {
                             console.log('incorrecte');
+                            document.getElementById(i + '-' + j).classList.add('incorrecte');
+                            document.getElementById('numero' + n).classList.add('incorrecte');
                         }
                         n++;
+                    }
+                } if (faltenCelles) {
+                    alert("Omple totes les celles");
+                } else {
+                    if (encerts == 81) {
+                        this.victoria = true;
+                    } else {
+                        this.derrota = true;
                     }
                 }
             }
