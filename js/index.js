@@ -48,34 +48,17 @@ function carga() {
         }
     }
 
-    /*Vue.component('menuInicial', {
-        props: {
-            data: {
-                type: Object
-            }
-        },
-        template: `
-          <div>
-              <template v-for="(option, index) in data.radiosDynamicOptions">
-                <input v-model="data.radiosDynamic" type="radio" v-bind:value="option.value" v-bind:id="option.value"/>
-                <label v-bind:for="option.value">{{ option.label }}</label>
-                <br v-if="index < data.radiosDynamicOptions.length">
-              </template>
-              <p>
-                <strong>Radios:</strong> {{ data.radiosDynamic }}
-              </p>
-          </div>
-
-        `
-    });*/
-
     let app = new Vue({
         el: '#app',
         data: function () {
             return {
+                dadesPartida: { 'nomJugador': '', 'temps': 0, },
                 victoria: false,
                 derrota: false,
                 comptador: 0,
+                comptadadorPartida: setInterval(() => {
+                    this.comptador++
+                }, 1000),
                 sudoku:
                 {
                     resolt: [[1, 6, 5, 3, 9, 4, 2, 7, 8], [3, 2, 4, 1, 8, 7, 5, 6, 9], [7, 8, 9, 2, 6, 5, 3, 4, 1], [9, 4, 6, 8, 1, 3, 7, 5, 2], [8, 5, 3, 7, 2, 9, 4, 1, 6], [2, 1, 7, 5, 4, 6, 8, 9, 3], [6, 7, 1, 4, 3, 2, 9, 8, 5], [5, 3, 8, 9, 7, 1, 6, 2, 4], [4, 9, 2, 6, 5, 8, 1, 3, 7]],
@@ -90,11 +73,12 @@ function carga() {
                 <table id="taulell">
                 </table>
                 <button v-on:click="comprobarResultat">Comprobar resultat</button>
+                <button v-on:click="autoCompletar">Botón hack</button>
                 <transition name="slide-fade">
-                    <p v-if="victoria">Has guanyat</p>
+                    <h1 v-if="victoria">Has guanyat</h1>
                 </transition>
                 <transition name="slide-fade">
-                    <p v-if="derrota">Has perdut</p>
+                    <h1 v-if="derrota">Has perdut</h1>
                 </transition>
             </section>
         `, methods: {
@@ -120,9 +104,7 @@ function carga() {
                         n++;
                     }
                 }
-                setInterval(() => {
-                    this.comptador++
-                }, 1000)
+                
             }, comprobarResultat() {
                 let n = 1;
                 let encerts = 0;
@@ -133,12 +115,16 @@ function carga() {
 
                         if (document.getElementById('numero' + n).value == this.sudoku.resolt[i][j]) {
                             console.log('correcte');
+                            document.getElementById(i + '-' + j).classList.remove('incorrecte');
+                            document.getElementById('numero' + n).classList.remove('incorrecte');
                             document.getElementById(i + '-' + j).classList.add('correcte');
                             document.getElementById('numero' + n).classList.add('correcte');
                             encerts++;
 
                         } else {
                             console.log('incorrecte');
+                            document.getElementById(i + '-' + j).classList.remove('correcte');
+                            document.getElementById('numero' + n).classList.remove('correcte');
                             document.getElementById(i + '-' + j).classList.add('incorrecte');
                             document.getElementById('numero' + n).classList.add('incorrecte');
                         }
@@ -148,9 +134,31 @@ function carga() {
                     alert("Omple totes les celles");
                 } else {
                     if (encerts == 81) {
+                        clearInterval(this.comptadadorPartida);
                         this.victoria = true;
+                        setTimeout(() => {
+                            let jugador = prompt("Enhorabona. Introdueix el teu nom");
+                            this.dadesPartida.nomJugador = jugador;
+                            this.dadesPartida.temps = this.comptador;
+                            if (localStorage.getItem("sudoku1")===null) {
+                                localStorage.sudoku1 = JSON.stringify([this.dadesPartida]);
+                            } else {
+                                let puntuacions = JSON.parse(localStorage.getItem('sudoku1'));
+                                puntuacions.push(this.dadesPartida);
+                                localStorage.sudoku1 = JSON.stringify(puntuacions);
+                            }
+                        }, 3000)
                     } else {
                         this.derrota = true;
+                    }
+                }
+            },
+            autoCompletar() {
+                let numero2=1;
+                for (let i = 0; i < 9; i++) {
+                    for (let j = 0; j < 9; j++) { 
+                        document.getElementById('numero'+numero2).setAttribute('value', this.sudoku.resolt[i][j]);
+                        numero2++;
                     }
                 }
             }
