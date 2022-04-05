@@ -1,4 +1,4 @@
-body{
+body {
     font-family: 'Noto Sans', sans-serif;
 }
 
@@ -26,7 +26,7 @@ table {
     border: 3px solid black;
 }
 
-input{
+input {
     width: 50px;
     height: 50px;
     font-size: 35px;
@@ -35,7 +35,7 @@ input{
     outline: none;
 }
 
-input[type=radio]{
+input[type=radio] {
     width: 20px;
     height: 20px;
 }
@@ -63,4 +63,25 @@ input[type=radio]{
 .slide-fade-enter, .slide-fade-leave-to {
     transform: translateX(10px);
     opacity: 0;
+}
+
+#sudokuTaula {
+    position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+#temporitzador{
+    display:inline-block;
+    background-color: #4dffbe;
+    width: 517px;
+    padding-left: 5px;
+}
+
+
+button{
+    font-family: 'Noto Sans', sans-serif;
+    margin-top: 10px;
 }
