@@ -4,7 +4,7 @@ let db;
 
 
 let accesDB = new Promise(function (myResolve, myReject) {
-    var request = indexedDB.open(dbName, 8);
+    var request = indexedDB.open(dbName, 9);
 
     request.onerror = function (event) {
         myReject();
@@ -28,9 +28,9 @@ let accesDB = new Promise(function (myResolve, myReject) {
         objectStore.transaction.oncomplete = function (event) {
             var customerObjectStore = db.transaction("titols", "readwrite").objectStore("titols");
             customerData = [
-                {id: 1, nom: "sudoku12"},
-                {id: 2, nom: "sudoku22"},
-                {id: 3, nom: "sudoku32"},
+                {id: 1, nom: "Sudoku 1"},
+                {id: 2, nom: "Sudoku 2"},
+                {id: 3, nom: "Sudoku 3"},
             ]
             for (var i in customerData) {
                 customerObjectStore.add(customerData[i]);
