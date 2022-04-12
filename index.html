@@ -10,7 +10,7 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap');
     </style>
-    
+
     <link href="https://cdn.jsdelivr.net/npm/animate.css@3.5.1" rel="stylesheet" type="text/css">
 </head>
 
@@ -62,13 +62,14 @@
             <input v-model="data.radiosDynamic" type="radio" v-bind:value="option.value" v-bind:id="option.value"/>
             <label v-bind:for="option.value">{{ option.label }}</label>
             <br v-if="index < data.radiosDynamicOptions.length">
-          </template>
+          </template><br>
 
-          <strong>Radios:</strong> {{ data.radiosDynamic }}
+          
           <a v-bind:href="data.radiosDynamic"
              v-on:click="this.$parent.navegar">
-             Principal
+             Carregar
           </a>
+          <br><br><br>
           <div v-bind:is="this.$parent.vistaActual"></div>
           </div>
 
@@ -102,12 +103,12 @@
               <table id="taulell">
               </table>
               <button v-on:click="comprobarResultat">Comprobar resultat</button>
-              <button v-on:click="autoCompletar">Botón hack</button>
-              <transition name="slide-fade" appear>
-                <h1 v-if="victoria">Has guanyat</h1>
+              <button v-on:click="autoCompletar">Resposta</button>
+              <transition name="custom-classes-transition" enter-active-class="animated bounceInDown">
+                <h1 v-if="victoria" id="resultat">HAS GUANYAT!</h1>
               </transition>
-              <transition name="slide-fade">
-                <h1 v-if="derrota">Has perdut</h1>
+              <transition name="custom-classes-transition" enter-active-class="animated bounceInDown">
+                <h1 v-if="derrota" id="resultat">Has perdut</h1>
               </transition>
               </div>
               </section>
@@ -182,6 +183,7 @@
                                 }
                             }, 3000)
                         } else {
+                            clearInterval(this.comptadadorPartida);
                             this.derrota = true;
                         }
                     }
@@ -222,25 +224,23 @@
             },
 
             template: `
-            <transition
-          name="custom-classes-transition"
-          enter-active-class="animated slideInRight"
+            <transition name="slide-fade" appear>
               <section>
                 <div id="sudokuTaula">
               <span id="temporitzador">Sudoku 2 - {{ comptador }}</span>
               <table id="taulell">
               </table>
               <button v-on:click="comprobarResultat">Comprobar resultat</button>
-              <button v-on:click="autoCompletar">Botón hack</button>
-              <transition name="slide-fade" appear>
-                <h1 v-if="victoria">Has guanyat</h1>
+              <button v-on:click="autoCompletar">Resposta</button>
+              <transition name="custom-classes-transition" enter-active-class="animated bounceInDown">
+                <h1 v-if="victoria" id="resultat">HAS GUANYAT!</h1>
               </transition>
-              <transition name="slide-fade">
-                <h1 v-if="derrota">Has perdut</h1>
+              <transition name="custom-classes-transition" enter-active-class="animated bounceInDown">
+                <h1 v-if="derrota" id="resultat">Has perdut</h1>
               </transition>
               </div>
               </section>
-              </transition>
+          </transition>
         `, methods: {
                 crearCelles: function () {
                     let n = 1;
@@ -311,6 +311,7 @@
                                 }
                             }, 3000)
                         } else {
+                            clearInterval(this.comptadadorPartida);
                             this.derrota = true;
                         }
                     }
@@ -351,19 +352,19 @@
             },
 
             template: `
-          <transition name="slide-fade" appear>
+            <transition name="slide-fade" appear>
               <section>
                 <div id="sudokuTaula">
-                    <span id="temporitzador">Sudoku 3 - {{ comptador }}</span>
+              <span id="temporitzador">Sudoku 3 - {{ comptador }}</span>
               <table id="taulell">
               </table>
               <button v-on:click="comprobarResultat">Comprobar resultat</button>
-              <button v-on:click="autoCompletar">Botón hack</button>
-              <transition name="slide-fade" appear>
-                <h1 v-if="victoria">Has guanyat</h1>
+              <button v-on:click="autoCompletar">Resposta</button>
+              <transition name="custom-classes-transition" enter-active-class="animated bounceInDown">
+                <h1 v-if="victoria" id="resultat">HAS GUANYAT!</h1>
               </transition>
-              <transition name="slide-fade">
-                <h1 v-if="derrota">Has perdut</h1>
+              <transition name="custom-classes-transition" enter-active-class="animated bounceInDown">
+                <h1 v-if="derrota" id="resultat">Has perdut</h1>
               </transition>
               </div>
               </section>
@@ -438,6 +439,7 @@
                                 }
                             }, 3000)
                         } else {
+                            clearInterval(this.comptadadorPartida);
                             this.derrota = true;
                         }
                     }
